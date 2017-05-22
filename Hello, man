@@ -10,4 +10,33 @@ int main()
 	return 0;
 }
 --------------------
+#include <iostream>
+#include <string.h>
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+int main()
+{
+	int* pA = new int[10];
+	for (int i = 0; i < 10; ++i)
+	{
+		pA[i] = i;
+	}
+	for (int i = 0; i < 10; ++i)
+	{
+		std::cout << pA[i] << " ";
+	}
+	delete[] pA;
+
+	char pC[] = "Welcome";
+	char* str = new char[21];
+	strcpy(str, "Welcome");
+	std::cout << str;
+	delete[] str;
+
+	return 0;
+}
