@@ -21,12 +21,12 @@ Distance::Distance(int feet) :
 {
 }
 
-int Distance::GetFeet()
+int Distance::GetFeet () const
 {
 	return m_feet;
 }
 
-float Distance::GetInches()
+float Distance::GetInches() const
 {
 	return m_inches;
 }
@@ -135,6 +135,12 @@ Distance Distance::operator++(int)
 	return result;
 }
 
+float operator/(Distance const& lhs, Distance const& rhs)
+{
+	float inches1 = lhs.GetFeet()*12.0f + lhs.GetFeet();
+	float inches2 = rhs.GetFeet()*12.0f + rhs.GetFeet();
+	return inches1 / inches2;
+}
 //h
 class Distance
 {
@@ -143,8 +149,8 @@ public:
 	Distance(int feet, float inches);
 	Distance(int feet);
 
-	int GetFeet();
-	float GetInches();
+	int GetFeet() const;
+	float GetInches() const;
 	void SetData(int feet, float inches);
 	void Read();
 	void Print();
@@ -162,6 +168,8 @@ private:
 	int m_feet = 0;
 	float m_inches = 0;
 };
+
+float operator/(Distance const& lhs, Distance const);
 
 // main
 #include <iostream>
