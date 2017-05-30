@@ -1,0 +1,331 @@
+//h
+#pragma once
+
+#include <iosfwd>
+
+	class String
+	{
+	private:
+		char* m_str = nullptr;
+
+	public:
+		String();
+		String(char const* str);
+		String(String const& string);
+		~String();
+
+		char const* GetCString() const;
+		size_t GetLength() const;
+		String operator+(String const& rhs);
+
+		bool operator==(String const& rhs) const;
+		bool operator!=(String const& rhs) const;
+		bool operator<(String const& rhs) const;
+		bool operator>(String const& rhs) const;
+
+		String& operator=(String const& rhs);
+		char operator[](int idx) const;
+		char& operator[](int idx);
+
+		operator char*();
+
+		friend std::istream& operator >> (std::istream& stream, String& string);
+	};
+
+	std::ostream& operator << (std::ostream& stream, String const& string);
+	std::istream& operator >> (std::istream& stream, String& string);
+----------------------------
+
+//cpp
+#include "String.h"
+
+#include <cstring>
+#include <iostream>
+
+String::String()
+{
+	m_str = new char[1];
+	m_str[0] = '\0';
+}
+
+String::String(char const* str)
+{
+	size_t length = strlen(str);
+	m_str = new char[length + 1];
+	// strcpy(m_str, str);
+	memcpy(m_str, str, length + 1);
+}
+
+String::String(String const& string)
+{
+	size_t length = string.GetLength();
+	m_str = new char[length + 1];
+	// strcpy(m_str, string.m_str);
+	memcpy(m_str, string.m_str, length + 1);
+}
+
+String::~String()
+{
+	delete[] m_str;
+}
+size_t String::GetLength() const
+{
+	return strlen(m_str);
+}
+
+char const* String::GetCString() const
+{
+	return m_str;
+}
+
+String String::operator+(String const& rhs)
+{
+	size_t length1 = GetLength();
+	size_t length2 = rhs.GetLength();
+	String newStr;
+	delete[] newStr.m_str;
+	newStr.m_str = new char[length1 + length2 + 1];
+	/*strcat(newStr.m_str, m_str);
+	strcat(newStr.m_str, rhs.m_str);*/
+	memcpy(newStr.m_str, m_str, length1);
+	memcpy(newStr.m_str + length1, rhs.m_str, length2 + 1); 
+
+	return newStr;
+}
+
+bool String::operator==(String const& rhs) const
+{
+	return strcmp(m_str, rhs.m_str) == 0;
+}
+
+bool String::operator!=(String const& rhs) const
+{
+	// return !(*this == rhs);
+	return strcmp(m_str, rhs.m_str) != 0;
+}
+
+bool String::operator<(String const& rhs) const
+{
+	return strcmp(m_str, rhs.m_str) < 0;
+}
+
+bool String::operator>(String const& rhs) const
+{
+	return strcmp(m_str, rhs.m_str) > 0;
+}
+
+std::ostream& operator<<(std::ostream& stream, String const& string)
+{
+	stream << string.GetCString();
+	return stream;
+}
+std::istream& operator >> (std::istream& stream, String& string)
+{
+	char buffer[1024];
+	stream.getline(buffer, 1024);
+	size_t length = strlen(buffer);
+	delete[] string.m_str;
+	string.m_str = new char[length + 1];
+	strcpy(string.m_str, buffer);
+
+	return stream;
+}
+
+String& String::operator=(String const& rhs)
+{
+	if (&rhs != this)
+	{
+		String tmp(rhs);
+		delete[] m_str;
+		m_str = tmp.m_str;
+		tmp.m_str = nullptr;
+	}
+	return *this;
+}
+
+char String::operator[](int idx) const
+{
+	String* nonConstThis = const_cast<String*>(this);
+	return (*nonConstThis)[idx];
+}
+
+char& String::operator[](int idx)
+{
+	if (idx < 0 || idx >= GetLength())
+	{
+		std::cout << "Invalid index\n";
+		exit(-1);
+	}
+	return m_str[idx];
+}
+
+String::operator char*()
+{
+	return m_str;
+}
+
+----------------------------------
+//main
+
+#include <iostream>
+#include <String.h>
+#include "String.h"
+
+#include "Student.h"
+
+int main()
+{
+	
+	/*Distance d1, d2;
+	std::cout << "Enter first: ";
+	std::cin >> d1;
+	std::cout << "Enter second: ";
+	std::cin >> d2;
+	Distance summ = d1 + d2;
+	summ = summ + 1;*/
+	String s1 = "Hello.\n";
+	char s2[10];
+	strcpy(s2, s1);
+
+	String s3;
+	std::cout << s2;
+	std::cin >> s3;
+	String s5 = s1 + s3;
+	std::cout << s5;
+	
+	return 0;
+}
+-------------------------------------
+//Student.cpp
+#include "Student.h"
+
+#include <cstring>
+#include <iostream>
+
+
+int Student::g_count = 0;
+
+void Student::IncreaseCounter()
+{
+	++g_count;
+}
+void Student::DecreaseCounter()
+{
+	--g_count;
+}
+
+int Student::GetStudentCount()
+{
+	return g_count;
+}
+
+Student::Student() :
+	m_rating(0)
+{
+	IncreaseCounter();
+}
+
+Student::Student(String const& name, int rating) :
+	m_name(name),
+	m_rating(rating)
+{
+	IncreaseCounter();
+}
+
+Student::Student(Student const& student) :
+	m_rating(student.m_rating)
+{
+	IncreaseCounter();
+	std::cout << "copy ctor\n";
+	m_name = student.m_name;
+}
+
+Student::~Student()
+{
+	DecreaseCounter();
+}
+
+String const& Student::GetName() const
+{
+	return m_name;
+}
+
+int Student::GetRating() const
+{
+	return m_rating;
+}
+
+void Student::SetName(String const& name)
+{
+	m_name = name;
+}
+
+void Student::SetRating(int rating)
+{
+	m_rating = rating;
+}
+
+void Student::Read()
+{
+	std::cout << "Enter name: ";
+	char buffer[21];
+	std::cin.getline(buffer, 20);
+	SetName(buffer);
+	std::cout << "Enter rating: ";
+	std::cin >> m_rating;
+}
+
+void Student::Print() const
+{
+	std::cout << m_name << ": " << m_rating << "\n";
+}
+
+Student& Student::operator=(Student& student)
+{
+	if (this == &student)
+	{
+		return *this;
+	}
+	this->m_name = student.m_name;
+	this->m_rating = student.GetRating();
+	return *this;
+}
+-------------------------------------------
+//Student.h
+
+#pragma once
+
+#include "String.h"
+
+class Student
+{
+private:
+	String m_name;
+	int m_rating;
+
+	static int g_count;
+
+public:
+	Student();
+	Student(String const& name, int rating);
+	// copy constructor
+	Student(Student const& student);
+
+	~Student();
+
+	String const& GetName() const;
+	int GetRating() const;
+
+	void SetName(String const& name);
+	void SetRating(int rating);
+
+	void Read();
+	void Print() const;
+
+	Student& operator=(Student& student);
+
+	static void IncreaseCounter();
+	static void DecreaseCounter();
+	static int GetStudentCount();
+};
+---------------------------
