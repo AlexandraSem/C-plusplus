@@ -13,9 +13,15 @@ void BubbleSort(T* arr, int count)
 			if (arr[j] > arr[j + 1])
 			{
 				// swap(arr[j], arr[j + 1]);
+				
+				//копирование
 				T tmp = arr[j];
 				arr[j] = arr[j + 1];
 				arr[j + 1] = tmp;
+				// перемещение
+				T tmp = std::move(arr[j]);;
+				arr[j] = std::move(arr[j + 1]);
+				arr[j + 1] = std::move(tmp);
 			}
 		}
 	}
