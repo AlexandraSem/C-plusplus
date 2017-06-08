@@ -42,3 +42,17 @@ int main()
 
 	return 0;
 }
+-----------------------------
+//main
+	Student arr4[] = { Student("Petrov", 5), Student("Ivanov", 7) };
+	BubbleSort(arr4, 2);
+	for (int i = 0; i < 2; ++i)
+	{
+		arr4[i].Print();
+//cpp & h
+bool Student::operator>(Student const& rhs) const
+
+{
+	return m_name > rhs.m_name;
+}
+
