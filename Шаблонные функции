@@ -92,3 +92,26 @@ T Average(T* arr, int count)
 //cpp
 std::cout << Average(arr1, 5);
 ----------------------------------
+//before main
+template<class T, int N>
+class Array
+{
+private:
+	T m_array[N];
+
+public:
+	Array();
+
+	template<class T1, int N1>
+	Array(const Array<T1, N1>& array);
+};
+
+template<class T, int N>
+Array<T,N>::Array()
+{
+	memset(m_array,0,N);
+}
+//main
+Array<double, 10> arr;
+	Array<int, 11>arr9;
+	Array<double, 10>arr8 = arr9;
