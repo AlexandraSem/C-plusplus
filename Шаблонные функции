@@ -55,4 +55,40 @@ bool Student::operator>(Student const& rhs) const
 {
 	return m_name > rhs.m_name;
 }
+-----------------------------------
+//main
+template<class T1,class T2>
+bool Greater(T1 const& a, T2 const& b)
+{
+	return a > (T1)b;
+}
+bool Greater(int const& a, double const& b)
+{
+	return (double)a > b;
+}
 
+template<class T>
+T* Find(T* arr,int count, T  const& element)
+{
+	for (int i = 0; i < count; ++i)
+	{
+		if (arr[i] == element)
+		{
+			return arr + i;
+		}
+	}
+	return nullptr;
+}
+template<class T>
+T Average(T* arr, int count)
+{
+	T alisa = 0;
+	for (int i = 0; i < count; i++)
+	{
+		alisa += arr[i];
+	}
+	return alisa / count;
+}
+//cpp
+std::cout << Average(arr1, 5);
+----------------------------------
