@@ -1,0 +1,242 @@
+//Apply.h
+#pragma once
+
+template<class T, int N>
+class Array
+{
+public:
+	T m_array[N];
+	Array();
+
+	template<int N1>
+	Array(const Array<T, N1>& rhs);
+
+	T& operator[](int idx);
+
+	int GetSize() const;
+	template<int N1>
+	Array<T,N>& operator=(Array<T,N1> const& rhs);
+
+};
+
+template<class T, int N>
+template<int N1>
+Array<T, N>& Array<T,N>::operator=(Array<T, N1> const& rhs)
+{
+	if ((void*)&rhs != (void*)this)
+	{
+		for (int i = 0; i < N; ++i)
+		{
+			m_array[i] = i < N1 ? rhs.m_array[i] : T();
+		}
+	}
+	return *this;
+}
+
+template<class T, int N>
+Array<T, N>::Array()
+{
+	memset(m_array, 0, N);
+}
+
+template<class T, int N>
+template<int N1>
+Array<T, N>::Array(const Array<T, N1>& rhs)
+{
+	for (int i = 0; i < N; ++i)
+	{
+		m_array[i] = i < N1 ? rhs.m_array[i] : T();
+	}
+}
+
+template<class T, int N>
+T& Array<T, N>::operator[](int idx)
+{
+	if (idx < 0 || idx >= N)
+	{
+		std::cout << "Invalid index\n";
+		exit(1);
+	}
+	return m_array[idx];
+}
+
+template<class T, int N>
+int Array<T, N>::GetSize() const
+{
+	return N;
+}
+------------------------------------------------------
+#include "String.h"
+#include "Student.h"
+#include <cstring>
+#include <memory>
+#include <iostream>
+#include "Apply.h"
+#include <algorithm>
+
+
+template<class T>
+T const& max(T const& a, T const& b)
+{
+	return a > b ? a : b;
+}
+
+char const* max(char const* a, char const* b)
+{
+	return strcmp(a, b) > 0 ? a : b;
+}
+
+template<class T>
+T const& min(T const& a, T const& b)
+{
+	return a < b ? a : b;
+}
+
+template<class T>
+T const& max(T const& a, T const& b, T const& c)
+{
+	return max(max(a, b), c);
+}
+
+template<class T1, class T2>
+bool Greater(T1 const& a, T2 const& b)
+{
+	return a > (T1)b;
+}
+
+bool Greater(int const& a, double const& b)
+{
+	return (double)a > b;
+}
+
+template<class T>
+void BubbleSort(T* arr, int count)
+{
+	for (int i = count - 1; i > 0; --i)
+	{
+		for (int j = 0; j < i; ++j)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				T tmp = std::move(arr[j]);
+				arr[j] = std::move(arr[j + 1]);
+				arr[j + 1] = std::move(tmp);
+			}
+		}
+	}
+}
+
+template<class T>
+T* Find(T* array, int count, T const& element)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if (array[i] == element)
+		{
+			return array + i;
+		}
+	}
+	return nullptr;
+}
+
+template<typename T>
+class AccumulationTraits;
+
+template<>
+class AccumulationTraits<int>
+{
+public:
+	typedef int AccT;
+};
+
+template<>
+class AccumulationTraits<char>
+{
+public:
+	typedef int AccT;
+};
+
+template<>
+class AccumulationTraits<const char>
+{
+public:
+	typedef int AccT;
+};
+
+template<>
+class AccumulationTraits<double>
+{
+public:
+	typedef double AccT;
+};
+
+template<>
+class AccumulationTraits<float>
+{
+public:
+	typedef double AccT;
+};
+
+template<typename T>
+T Average(T* array, int count)
+{
+	AccumulationTraits<T>::AccT alisa = 0;
+	for (int i = 0; i < count; i++)
+	{
+		alisa += array[i];
+	}
+	return alisa / count;
+}
+
+int main()
+{
+	//double arr1[] = { 4.3, 2.5, 45.3, 30.1, 4.2 };
+	//int arr2[] = { 4, 1, 10, 7, 8 };
+	//String arr3[] = { "dfgdf", "adasd", "ghgh", "bbf", "cdfd" };
+
+	//BubbleSort(arr1, 5);
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	std::cout << arr1[i] << " ";
+	//}
+	//std::cout << "\n";
+	//BubbleSort(arr2, 5);
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	std::cout << arr2[i] << " ";
+	//}
+	//std::cout << "\n";
+	//BubbleSort(arr3, 5);
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	std::cout << arr3[i] << " ";
+	//}
+	//std::cout << "\n";
+
+	//Student arr4[] = { Student("Petrov", 5), Student("Ivanov", 7) };
+	//BubbleSort(arr4, 2);
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	arr4[i].Print();
+	//}
+
+	//std::cout << Average(arr1, 5) << "\n";
+
+	////Array<double, 10> arr8;
+	//Array<int, 11> arr9;
+
+	//for (int i = 0; i < arr9.GetSize(); i++)
+	//{
+	//	arr9[i] = i + 1;
+	//}
+	//Array<int, 10> arr8 = arr9;
+	//for (int i = 0; i < arr8.GetSize(); i++)
+	//{
+	//	std::cout << arr8[i] << "  ";
+	//}
+	//arr8 = arr9;
+	std::cout << Average("aaaaeeeeeee", 11) << "\n";
+
+	return 0;
+}
+--------------------------------------------------
