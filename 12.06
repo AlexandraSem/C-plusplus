@@ -1,0 +1,68 @@
+//main.cpp
+
+class Compare
+{
+	int m_value;
+public:
+	Compare() = default;
+	Compare(int value) :m_value(value)
+	{
+
+	};
+	bool operator()(int const& value) const
+	{
+		return m_value == value;
+	}
+};
+typedef bool(*CompareFunc)(int const&);
+
+bool CompareWith5(int const& value)
+{
+	return value == 5;
+
+}
+
+bool GreaterThan5(int const& value)
+{
+	return value > 5;
+}
+
+int* Find(int* array, int count,CompareFunc compare)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if ((*compare)(array[i]))
+		{
+			return array + i;
+		}
+	}
+	return nullptr;
+}
+//int main()
+  int a = 5;
+	int b = 6;
+	Compare cmp(5);
+	if (cmp(a))
+	{
+		std::cout << "true\n";
+	}
+	else
+	{
+		std::cout << "false\n";
+	}
+	if (cmp(b))
+	{
+		std::cout << "true\n";
+	}
+	else
+	{
+		std::cout << "false\n";
+	}
+
+	int arr[] = { 1,10,5,6,7 };
+	int* result = Find(arr, 5, GreaterThan5);
+	if (result)
+	{
+		std::cout << *result << "\n";
+	}
+-----------------------------
