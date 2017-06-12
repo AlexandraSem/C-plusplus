@@ -38,6 +38,18 @@ int* Find(int* array, int count,CompareFunc compare// Compare compare)
 	}
 	return nullptr;
 }
+/*template<class T,class Pred>
+T* Find(T* array, int count, Pred compare)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if ((compare)array[i])
+		{
+			return array + i;
+		}
+	}
+	return nullptr;
+}*/
 //int main()
   int a = 5;
 	int b = 6;
@@ -66,3 +78,60 @@ int* Find(int* array, int count,CompareFunc compare// Compare compare)
 		std::cout << *result << "\n";
 	}
 -----------------------------
+template<class T>
+class Compare
+{
+	T m_value;
+public:
+	Compare() = default;
+	Compare(T value) : m_value(value)
+	{
+	};
+
+	bool operator()(T const& value) const
+	{
+		return m_value == value;
+	}
+};
+
+typedef bool(*CompareFunc)(int const&);
+
+bool CompareWith5(int const& value)
+{
+	return value == 5;
+}
+
+bool GreaterThan5(int const& value)
+{
+	return value > 5;
+}
+
+template<class T1, class Pred>
+T1* Find(T1* array, int count, Pred compare)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if (compare(array[i]))
+		{
+			return array + i;
+		}
+	}
+	return nullptr;
+}
+
+int main()
+{
+	int a = 5, b = 6;
+
+	int arr[] = { 1, 10, 5, 6, 7 };
+	Compare<int> cmp(5);
+	Compare<int> cmp1(3);
+	int* result = Find(arr, 5, cmp1);
+	if (result)
+	{
+		std::cout << *result << "\n";
+	}
+
+	return 0;
+}
+---------------------------------------------
