@@ -1,5 +1,18 @@
 //main.cpp
+/*class Greater
+{
+	T m_value;
+public:
+	Greater() = default;
+	Greater(T value) : m_value(value)
+	{
+	};
 
+	bool operator()(T const& value) const
+	{
+		return m_value < value;
+	}
+};*/
 class Compare
 {
 	int m_value;
