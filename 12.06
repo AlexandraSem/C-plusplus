@@ -27,7 +27,7 @@ bool GreaterThan5(int const& value)
 	return value > 5;
 }
 
-int* Find(int* array, int count,CompareFunc compare)
+int* Find(int* array, int count,CompareFunc compare// Compare compare)
 {
 	for (int i = 0; i < count; i++)
 	{
