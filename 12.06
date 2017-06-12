@@ -172,3 +172,21 @@ void plus(int& a, int b = 5)
 int a = 1;
 	plus(a, 2);
 	plus(a);
+---------------------------
+template<class T, class Pred = GreaterFromTwo<T> >
+void BubbleSort(T* arr, int count, Pred compare = GreaterFromTwo<T>())
+BubbleSort(arr, 5);
+-----------------------------
+class GreaterFromTwoStudentByRating
+{
+public:
+	GreaterFromTwoStudentByRating() = default;
+
+	bool operator()(Student const& value1,
+		Student const& value2) const
+	{
+		return value1.GetRating() > value2.GetRating();
+	}
+};
+	BubbleSort(studArray, 2, GreaterFromTwoStudentByRating());
+----------------------------------------
