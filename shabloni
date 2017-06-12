@@ -1,0 +1,877 @@
+//main.cpp
+#include "String.h"
+#include "Student.h"
+#include <cstring>
+#include <memory>
+#include <iostream>
+#include "Apply.h"
+#include <algorithm>
+#include "ComplexClass.h"
+//
+//template<class T>
+//T const& max(T const& a, T const& b)
+//{
+//	return a > b ? a : b;
+//}
+//
+//char const* max(char const* a, char const* b)
+//{
+//	return strcmp(a, b) > 0 ? a : b;
+//}
+//
+//template<class T>
+//T const& min(T const& a, T const& b)
+//{
+//	return a < b ? a : b;
+//}
+//
+//template<class T>
+//T const& max(T const& a, T const& b, T const& c)
+//{
+//	return max(max(a, b), c);
+//}
+//
+//template<class T1, class T2>
+//bool Greater(T1 const& a, T2 const& b)
+//{
+//	return a > (T1)b;
+//}
+//
+//bool Greater(int const& a, double const& b)
+//{
+//	return (double)a > b;
+//}
+//
+//template<class T>
+//void BubbleSort(T* arr, int count)
+//{
+//	for (int i = count - 1; i > 0; --i)
+//	{
+//		for (int j = 0; j < i; ++j)
+//		{
+//			if (arr[j] > arr[j + 1])
+//			{
+//				T tmp = std::move(arr[j]);
+//				arr[j] = std::move(arr[j + 1]);
+//				arr[j + 1] = std::move(tmp);
+//			}
+//		}
+//	}
+//}
+//
+//template<class T>
+//T* Find(T* array, int count, T const& element)
+//{
+//	for (int i = 0; i < count; i++)
+//	{
+//		if (array[i] == element)
+//		{
+//			return array + i;
+//		}
+//	}
+//	return nullptr;
+//}
+//
+//template<typename T>
+//class AccumulationTraits;
+//
+//template<>
+//class AccumulationTraits<int>
+//{
+//public:
+//	typedef int AccT;
+//};
+//
+//template<>
+//class AccumulationTraits<char>
+//{
+//public:
+//	typedef int AccT;
+//};
+//
+//template<>
+//class AccumulationTraits<const char>
+//{
+//public:
+//	typedef int AccT;
+//};
+//
+//template<>
+//class AccumulationTraits<double>
+//{
+//public:
+//	typedef double AccT;
+//};
+//
+//template<>
+//class AccumulationTraits<float>
+//{
+//public:
+//	typedef double AccT;
+//};
+//
+//template<typename T>
+//T Average(T* array, int count)
+//{
+//	AccumulationTraits<T>::AccT alisa = 0;
+//	for (int i = 0; i < count; i++)
+//	{
+//		alisa += array[i];
+//	}
+//	return alisa / count;
+//}
+
+class Compare
+{
+	int m_value;
+public:
+	Compare() = default;
+	Compare(int value) :m_value(value)
+	{
+
+	};
+	bool operator()(int const& value) const
+	{
+		return m_value == value;
+	}
+};
+typedef bool(*CompareFunc)(int const&);
+
+bool CompareWith5(int const& value)
+{
+	return value == 5;
+
+}
+
+bool GreaterThan5(int const& value)
+{
+	return value > 5;
+}
+
+int* Find(int* array, int count,CompareFunc compare)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if ((*compare)(array[i]))
+		{
+			return array + i;
+		}
+	}
+	return nullptr;
+}
+int main()
+{
+	int a = 5;
+	int b = 6;
+	Compare cmp(5);
+	if (cmp(a))
+	{
+		std::cout << "true\n";
+	}
+	else
+	{
+		std::cout << "false\n";
+	}
+	if (cmp(b))
+	{
+		std::cout << "true\n";
+	}
+	else
+	{
+		std::cout << "false\n";
+	}
+
+	int arr[] = { 1,10,5,6,7 };
+	int* result = Find(arr, 5, GreaterThan5);
+	if (result)
+	{
+		std::cout << *result << "\n";
+	}
+
+	return 0;
+	//double arr1[] = { 4.3, 2.5, 45.3, 30.1, 4.2 };
+	//int arr2[] = { 4, 1, 10, 7, 8 };
+	//String arr3[] = { "dfgdf", "adasd", "ghgh", "bbf", "cdfd" };
+
+	//BubbleSort(arr1, 5);
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	std::cout << arr1[i] << " ";
+	//}
+	//std::cout << "\n";
+	//BubbleSort(arr2, 5);
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	std::cout << arr2[i] << " ";
+	//}
+	//std::cout << "\n";
+	//BubbleSort(arr3, 5);
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	std::cout << arr3[i] << " ";
+	//}
+	//std::cout << "\n";
+
+	//Student arr4[] = { Student("Petrov", 5), Student("Ivanov", 7) };
+	//BubbleSort(arr4, 2);
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	arr4[i].Print();
+	//}
+
+	//std::cout << Average(arr1, 5) << "\n";
+
+	////Array<double, 10> arr8;
+	//Array<int, 11> arr9;
+
+	//for (int i = 0; i < arr9.GetSize(); i++)
+	//{
+	//	arr9[i] = i + 1;
+	//}
+	//Array<int, 10> arr8 = arr9;
+	//for (int i = 0; i < arr8.GetSize(); i++)
+	//{
+	//	std::cout << arr8[i] << "  ";
+	//}
+	//arr8 = arr9;
+
+	//std::cout << Average("aaaaeeeeeee", 11) << "\n";
+	/*Complex<float> c1(2.4, 3.1);
+	Complex<double> c2(c1);
+	Complex<double> c3 = c1 + c2;
+	Complex<float> c4 = c3 * c1;
+
+	std::cout << c4 << std::endl;
+
+	c1 = c3;
+
+	std::cout << c1 << std::endl;*/
+}
+---------------------------------------------------------------
+//slack.cpp
+#include "Stack.h"
+
+#include <iostream>
+
+void Stack::ReallocateMemory(int newCapacity)
+{
+	m_capacity = newCapacity;
+	int* newMwmory = new int[m_capacity];
+	memcpy(newMwmory, m_elements, m_capacity);
+	delete[] m_elements;
+	m_elements = newMwmory;
+}
+
+Stack::Stack() :
+	m_capacity(10),
+	m_count(0)
+{
+	m_elements = new int[10];
+}
+
+Stack::Stack(Stack const& stack)
+{
+	m_capacity = stack.m_capacity;
+	m_count = stack.m_count;
+	m_elements = new int[m_capacity];
+	memcpy(m_elements, stack.m_elements, m_capacity);
+}
+
+Stack::~Stack()
+{
+	delete[] m_elements;
+}
+
+void Stack::Push(int element)
+{
+	if (m_count == m_capacity)
+	{
+		ReallocateMemory(m_capacity * 2);
+	}
+	m_elements[m_count] = element;
+	m_count++;
+}
+
+int Stack::Pop()
+{
+	m_count--;
+	if (m_count * 4 <= m_capacity && m_count >= 10)
+	{
+		ReallocateMemory(m_capacity / 2);
+	}
+	return m_elements[m_count];
+}
+
+size_t Stack::GetQuantity()
+{
+	return m_count;
+}
+
+int Stack::Top()
+{
+	return m_elements[m_count - 1];
+}
+
+void  Stack::Clear()
+{
+	m_count = 0;
+}
+
+Stack& Stack::operator=(Stack const& stack)
+{
+	if (this != &stack)
+	{
+		m_capacity = stack.m_capacity;
+		m_count = stack.m_count;
+		delete[] m_elements;
+		m_elements = new int[m_capacity];
+		memcpy(m_elements, stack.m_elements, m_capacity);
+	}
+	return *this;
+}
+
+//Stack& Stack::operator=(Stack&& st1)
+//{
+//	if (this != &st1)
+//	{
+//		delete[] m_elements;
+//		m_count = st1.m_count;
+//		m_capacity = st1.m_capacity;
+//		m_elements = st1.m_elements;
+//
+//		st1.m_elements = nullptr;
+//		st1.m_capacity = 0;
+//		st1.m_count = 0;
+//	}
+//	return *this;
+//}
+
+//Stack::Stack(Stack&& st1)
+//{
+//	m_count = st1.m_count;
+//	m_capacity = st1.m_capacity;
+//	m_elements = st1.m_elements;
+//
+//	st1.m_elements = nullptr;
+//	st1.m_capacity = 0;
+//	st1.m_count = 0;
+//}
+
+Stack& Stack::operator<<(int element)
+{
+	Push(element);
+	return *this;
+}
+
+Stack& Stack::operator >> (int& element)
+{
+	if (m_count != 0)
+	{
+		element = Pop();
+	}
+	return *this;
+}
+----------------------------------
+//string.cpp
+#include "String.h"
+
+#include <cstring>
+#include <iostream>
+
+
+String::String(char const* str)
+{
+	if (str)
+	{
+		m_str = new char[strlen(str) + 1];
+		strcpy(m_str, str);
+	}
+}
+
+String::String(String const& string)
+{
+	m_str = new char[string.GetLength() + 1];
+	strcpy(m_str, string.m_str ? string.m_str : "");
+}
+
+String::String(String&& rhs)
+{
+	m_str = rhs.m_str;
+	rhs.m_str = nullptr;
+}
+
+String& String::operator=(String const& rhs)
+{
+	if (this != &rhs)
+	{
+		delete[] m_str;
+		if (rhs.m_str != nullptr)
+		{
+			m_str = new char[rhs.GetLength() + 1];
+			strcpy(m_str, rhs.m_str);
+		}
+		else
+		{
+			m_str = nullptr;
+		}
+	}
+	return *this;
+}
+
+String& String::operator=(String&& rhs)
+{
+	if (this != &rhs)
+	{
+		delete[] m_str;
+		m_str = rhs.m_str;
+		rhs.m_str = nullptr;
+	}
+	return *this;
+}
+
+size_t String::GetLength() const
+{
+	return m_str != nullptr ? strlen(m_str) : 0;
+}
+
+char const* String::GetCString() const
+{
+	return m_str;
+}
+
+String String::operator+(String const& rhs)
+{
+	size_t length1 = GetLength();
+	size_t length2 = rhs.GetLength();
+	size_t newLength = length1 + length2;
+	String result;
+	result.m_str = new char[newLength + 1];
+	if (length1)
+	{
+		memcpy(result.m_str, m_str, length1);
+	}
+	if (length2)
+	{
+		memcpy(result.m_str + length1, rhs.m_str, length2);
+	}
+	result.m_str[newLength] = '\0';
+	return result;
+}
+
+bool String::operator==(String const& rhs) const
+{
+	return strcmp(m_str ? m_str : "", rhs.m_str ? rhs.m_str : "") == 0;
+}
+
+bool String::operator!=(String const& rhs) const
+{
+	return !(*this == rhs);
+}
+
+bool String::operator<(String const& rhs) const
+{
+	return strcmp(m_str ? m_str : "", rhs.m_str ? rhs.m_str : "") < 0;
+}
+
+bool String::operator>(String const& rhs) const
+{
+	return strcmp(m_str ? m_str : "", rhs.m_str ? rhs.m_str : "") > 0;
+}
+
+char& String::operator[](int idx)
+{
+	if (idx < 0 || idx >= GetLength())
+	{
+		std::cout << "String: invalid index\n";
+		exit(-1);
+	}
+	return m_str[idx];
+}
+
+char String::operator[](int idx) const
+{
+	String* this_ = const_cast<String*>(this);
+	return (*this)[idx];
+}
+
+String::operator char*()
+{
+	return m_str;
+}
+
+String::operator bool() const
+{
+	return GetLength() > 0;
+}
+
+std::ostream& operator<<(std::ostream& stream, String const& string)
+{
+	stream << string.GetCString() ? string.GetCString() : "";
+	return stream;
+}
+
+std::istream& operator >> (std::istream& stream, String& string)
+{
+	char buffer[1024];
+	stream >> buffer;
+	String tmp(buffer);
+	delete[] string.m_str;
+	string.m_str = tmp.m_str;
+	tmp.m_str = nullptr;
+	return stream;
+}
+---------------------------------------------------------
+//student.cpp
+#include "Student.h"
+
+#include <cstring>
+#include <iostream>
+
+
+Student::Student() :
+	m_rating(0)
+{
+}
+
+Student::Student(String const& name, int rating) :
+	m_name(name),
+	m_rating(rating)
+{
+}
+
+Student::Student(Student const& student) :
+	m_name(student.m_name),
+	m_rating(student.m_rating)
+{
+}
+
+Student::Student(Student&& student) :
+	m_name(std::move(student.m_name)),
+	m_rating(student.m_rating)
+{
+}
+
+Student::~Student()
+{
+}
+
+String const& Student::GetName() const
+{
+	return m_name;
+}
+
+int Student::GetRating() const
+{
+	return m_rating;
+}
+
+void Student::SetName(String const& name)
+{
+	m_name = name;
+}
+
+void Student::SetRating(int rating)
+{
+	m_rating = rating;
+}
+
+void Student::Read()
+{
+	std::cout << "Enter name: ";
+	char buffer[21];
+	std::cin.getline(buffer, 20);
+	m_name = buffer;
+	std::cout << "Enter rating: ";
+	std::cin >> m_rating;
+}
+
+void Student::Print() const
+{
+	std::cout << m_name << ": " << m_rating << "\n";
+}
+
+Student& Student::operator=(Student const& student)
+{
+	if (this != &student)
+	{
+		m_rating = student.m_rating;
+		m_name = student.m_name;
+	}
+	return *this;
+}
+
+Student& Student::operator=(Student&& student)
+{
+	if (this != &student)
+	{
+		m_name = std::move(student.m_name);
+		m_rating = student.m_rating;
+	}
+	return *this;
+}
+bool Student::operator>(Student const& rhs) const
+{
+	return m_name > rhs.m_name;
+}
+--------------------------------------------
+st.h
+#pragma once
+
+#include "String.h"
+
+class Student
+{
+private:
+	String m_name;
+	int m_rating;
+
+public:
+	Student();
+	Student(String const& name, int rating);
+	Student(Student const& student);
+	Student(Student&& student);
+	~Student();
+
+	String const& GetName() const;
+	int GetRating() const;
+
+	void SetName(String const& name);
+	void SetRating(int rating);
+
+	void Read();
+	void Print() const;
+
+	Student& operator=(Student const& student);
+	Student& operator=(Student&& student);
+	bool operator>(Student const& rhs) const;
+};
+-------------------------------------------
+//string.h
+#pragma once
+
+#include <iosfwd>
+
+class String
+{
+private:
+	char* m_str = nullptr;
+
+public:
+	String() = default;
+	String(char const* str);
+	String(String const& string);
+	String(String&& string);
+
+	String& operator=(String const& rhs);
+	String& operator=(String&& rhs);
+
+	size_t GetLength() const;
+	char const* GetCString() const;
+
+	String operator+(String const& rhs);
+	bool operator==(String const& rhs) const;
+	bool operator!=(String const& rhs) const;
+	bool operator<(String const& rhs) const;
+	bool operator>(String const& rhs) const;
+
+	char& operator[](int idx);
+	char operator[](int idx) const;
+
+	operator char*();
+	operator bool() const;
+
+	friend std::istream& operator >> (std::istream& stream, String& string);
+};
+
+std::ostream& operator<<(std::ostream& stream, String const& string);
+std::istream& operator >> (std::istream& stream, String& string);
+
+----------------------------------------------------------------------
+//stack.h
+#pragma once
+
+class Stack
+{
+private:
+	int* m_elements;
+	size_t m_capacity;
+	size_t m_count;
+
+	void ReallocateMemory(int newCapacity);
+
+public:
+	Stack();
+	Stack(Stack const& stack);
+	~Stack();
+
+	void Push(int element);
+	int Pop();
+	size_t GetQuantity();
+	int Top();
+	void Clear();
+
+	Stack& operator=(Stack const& stack);
+	Stack& operator<<(int element);
+	Stack& operator >> (int& element);
+};
+----------------------------------------------
+//complexclass.h
+#pragma once
+#include <iostream>
+
+template<class T>
+class Complex
+{
+	T m_Re;
+	T m_Im;
+public:
+	Complex();
+	Complex(T Re, T Im);
+	template<class T2>
+	Complex(Complex<T2> const& rhs);
+
+	template<class T2>
+	Complex<T>& operator=(Complex<T2> const& rhs);
+
+	T GetRe() const;
+	T GetIm() const;
+
+	Complex<T> operator+(Complex<T> const& rhs);
+	Complex<T> operator*(Complex<T> const& rhs);
+
+};
+
+template<class T>
+template<class T2>
+Complex<T>& Complex<T>::operator=(Complex<T2> const& rhs)
+{
+	if ((void*)this != (void*)&rhs)
+	{
+		m_Im = (T)rhs.GetIm();
+		m_Re = (T)rhs.GetRe();
+	}
+	return *this;
+}
+template<class T>
+std::ostream& operator<<(std::ostream& stream, Complex<T> const& rhs)
+{
+	stream << rhs.GetRe() << (rhs.GetIm() >= 0 ? "+" : "") <<
+		rhs.GetIm() << "i";
+	return stream;
+}
+
+template<class T>
+Complex<T>::Complex() :
+	m_Re(0), m_Im(0)
+{
+}
+
+template<class T>
+Complex<T>::Complex(T Re, T Im)
+{
+	m_Re = Re;
+	m_Im = Im;
+}
+
+template<class T>
+template<class T2>
+Complex<T>::Complex(Complex<T2> const& rhs)
+{
+	m_Im = (T)rhs.GetIm();
+	m_Re = (T)rhs.GetRe();
+}
+
+template<class T>
+T Complex<T>::GetRe() const
+{
+	return m_Re;
+}
+
+template<class T>
+T Complex<T>::GetIm() const
+{
+	return m_Im;
+}
+
+template<class T>
+Complex<T> Complex<T>::operator+(Complex<T> const& rhs)
+{
+	Complex<T> result(m_Re + rhs.m_Re, m_Im + rhs.m_Im);
+	return result;
+}
+template<class T>
+Complex<T> Complex<T>::operator*(Complex<T> const& rhs)
+{
+	Complex<T> result(m_Re * rhs.m_Re - m_Im * rhs.m_Im, m_Im * rhs.m_Re + m_Re * rhs.m_Im);
+	return result;
+}
+
+----------------------------------------------------------
+//apply.h
+#pragma once
+
+template<class T, int N>
+class Array
+{
+public:
+	T m_array[N];
+	Array();
+
+	template<int N1>
+	Array(const Array<T, N1>& rhs);
+
+	T& operator[](int idx);
+
+	int GetSize() const;
+	template<int N1>
+	Array<T,N>& operator=(Array<T,N1> const& rhs);
+
+};
+
+template<class T, int N>
+template<int N1>
+Array<T, N>& Array<T,N>::operator=(Array<T, N1> const& rhs)
+{
+	if ((void*)&rhs != (void*)this)
+	{
+		for (int i = 0; i < N; ++i)
+		{
+			m_array[i] = i < N1 ? rhs.m_array[i] : T();
+		}
+	}
+	return *this;
+}
+
+template<class T, int N>
+Array<T, N>::Array()
+{
+	memset(m_array, 0, N);
+}
+
+template<class T, int N>
+template<int N1>
+Array<T, N>::Array(const Array<T, N1>& rhs)
+{
+	for (int i = 0; i < N; ++i)
+	{
+		m_array[i] = i < N1 ? rhs.m_array[i] : T();
+	}
+}
+
+template<class T, int N>
+T& Array<T, N>::operator[](int idx)
+{
+	if (idx < 0 || idx >= N)
+	{
+		std::cout << "Invalid index\n";
+		exit(1);
+	}
+	return m_array[idx];
+}
+
+template<class T, int N>
+int Array<T, N>::GetSize() const
+{
+	return N;
+}
+-------------------------------------------
