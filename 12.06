@@ -147,4 +147,28 @@ int main()
 
 	return 0;
 }
+-------------------------------------------------
+template<class T>
+class GreaterFromTwo
+{
+public:
+	GreaterFromTwo() = default;
+
+	bool operator()(T const& value1,
+		T const& value2) const
+	{
+		return value1 > value2;
+	}
+};
+
+
+GreaterFromTwo<int> greaterFromTwo;
+	BubbleSort(arr, 5, greaterFromTwo);
 ---------------------------------------------
+void plus(int& a, int b = 5)
+{
+	a += b;
+}
+int a = 1;
+	plus(a, 2);
+	plus(a);
