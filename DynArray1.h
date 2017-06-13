@@ -14,7 +14,15 @@ public:
 	DynArray<T>& operator=(DynArray<T>&& dynArray);
 	DynArray(DynArray<T>&& dynArray);
 	DynArray<T> operator*(T element);
-
+	~DynArray()
+	{
+		delete[] m_data;
+	}
+	int GetCount() const
+	{
+		return m_count;
+	}
+	
 	template<class T>
 	friend std::ostream& operator<<(std::ostream& stream, DynArray<T> const& array);
 private:
@@ -22,6 +30,7 @@ private:
 	int m_capacity = 0;
 	int m_count = 0;
 };
+
 template<class T>
 std::ostream& operator<<(std::ostream& stream, DynArray<T> const& array)
 {
@@ -123,8 +132,3 @@ DynArray<T> DynArray<T>::operator*(T element)
 	}
 	return result;
 }
--------------
-//cpp
-DynArray<int> d = { 200, 300, 100 };
-DynArray<int> d1 = d*5;
- std::cout << d1 << "\n";
