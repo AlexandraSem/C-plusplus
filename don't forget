@@ -1,0 +1,20 @@
+//до пятницы
+#pragma once
+
+class List2;
+
+struct Node2
+{
+	int Data;
+	Node2* Next = nullptr;
+	Node2* Prev = nullptr;
+
+	Node2(int data) : Data(data)
+	{
+	}
+};
+
+class List2
+{
+
+};
