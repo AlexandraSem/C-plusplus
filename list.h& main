@@ -2,24 +2,27 @@
 #include <initializer_list>
 
 
+template<class T>
 class List;
 
+template<class T>
 struct Node
 {
-	int Data;
+	T Data;
 	Node* Next = nullptr;
 
-	Node(int data) : Data(data)
+	Node(T data) : Data(data)
 	{
 	}
 };
 
+template<class T>
 class Iterator
 {
 private:
-	Node* m_node;
+	Node<T>* m_node;
 public:
-	Iterator(Node* node) :m_node(node)
+	Iterator(Node<T>* node) :m_node(node)
 	{
 	}
 
@@ -46,18 +49,19 @@ public:
 	{
 		return !(*this == rhs);
 	}
-	friend class List;
 
+	friend class List<T>;
 };
 
+template<class T>
 class List
 {
 private:
-	Node* m_head = nullptr;
+	Node<T>* m_head = nullptr;
 
-	Node* GetLast()
+	Node<T>* GetLast()
 	{
-		Node* cur = m_head;
+		Node<T>* cur = m_head;
 		if (m_head == nullptr)
 		{
 			return cur;
@@ -72,13 +76,15 @@ private:
 
 public:
 
+	typedef Iterator<T> iterator;
+
 	List() = default;
-	List(std::initializer_list<int> const& list)
+	List(std::initializer_list<T> const& list)
 	{
-		Node* prevNode = nullptr;
-		for (int value : list)
+		Node<T>* prevNode = nullptr;
+		for (T value : list)
 		{
-			Node* newNode = new Node(value);
+			Node<T>* newNode = new Node<T>(value);
 			if (prevNode != nullptr)
 			{
 				prevNode->Next = newNode;
@@ -93,10 +99,10 @@ public:
 
 	void Clear()
 	{
-		Node* node = m_head;
+		Node<T>* node = m_head;
 		while (node != nullptr)
 		{
-			Node* nextNode = node->Next;
+			Node<T>* nextNode = node->Next;
 			delete node;
 			node = nextNode;
 		}
@@ -108,20 +114,20 @@ public:
 		Clear();
 	}
 
-	Iterator begin()
+	iterator begin()
 	{
-		return Iterator(m_head);
+		return iterator(m_head);
 	}
 
-	Iterator end()
+	iterator end()
 	{
-		return Iterator(nullptr);
+		return iterator(nullptr);
 	}
 
-	void insert(int value, Iterator position)
+	void insert(int value, iterator position)
 	{
-		Node* curNode = position.m_node;
-		Node* newNode = new Node(value);
+		Node<T>* curNode = position.m_node;
+		Node<T>* newNode = new Node<T>(value);
 		if (curNode)
 		{
 			newNode->Next = curNode->Next;
@@ -133,7 +139,7 @@ public:
 		}
 		else
 		{
-			Node* lastNode = GetLast();
+			Node<T>* lastNode = GetLast();
 			if (lastNode == nullptr)
 			{
 				m_head = newNode;
@@ -145,9 +151,9 @@ public:
 		}
 	}
 
-	void erase(Iterator position)
+	void erase(iterator position)
 	{
-		Node* cur = position.m_node;
+		Node<T>* cur = position.m_node;
 
 		if (cur == nullptr)
 		{
@@ -161,7 +167,7 @@ public:
 			return;
 		}
 
-		Node* next = cur->Next;
+		Node<T>* next = cur->Next;
 
 		if (next != nullptr)
 		{
@@ -171,7 +177,7 @@ public:
 		}
 		else
 		{
-			Node* preLast = m_head;
+			Node<T>* preLast = m_head;
 			while (preLast->Next != cur)
 			{
 				preLast = preLast->Next;
@@ -180,17 +186,52 @@ public:
 			delete cur;
 		}
 	}
+
+	int GetCount() const
+	{
+		int count = 0;
+		Node<T>* node = m_head;
+
+		while (node != nullptr)
+		{
+			count++;
+			node = node->Next;
+		}
+		return count;
+	}
 };
 
 //main
 
-List list = { 200,201,205,208 };
-	Iterator it = list.begin();
+List<int> list = { 200, 201, 205, 208 };
+	std::cout << list.GetCount() << "\n";
+	List<int>::iterator it = list.begin();
 	++it;
 	++it;
 	++it;
 	list.erase(it);
-	for (Iterator it = list.begin(); it != list.end(); ++it)
+	std::cout << list.GetCount() << "\n";
+	for (List<int>::iterator it = list.begin(); it != list.end(); ++it)
 	{
 		std::cout << *it << " ";
 	}
+	std::cout << "\n";
+
+	List<double> list2 = { 20.5, 2.01, 205.4, 208.3 };
+	for (List<double>::iterator it = list2.begin(); it != list2.end(); ++it)
+	{
+		std::cout << *it << " ";
+	}
+	
+	std::list<int> list3 = { 123,23,34,454 };
+	for (std::list<int>::iterator it = list3.begin(); it != list3.end(); ++it)
+	{
+		std::cout << *it << " ";
+	}
+	std::list<int>::iterator it1 = std::find(list3.begin(), list3.end(),23);
+	if (it1 != list3.end())
+	{
+		std::cout << "found\n";
+	}
+	std::cout << "count " << std::count(list3.begin(), list3.end(), 23);
+	return 0;
