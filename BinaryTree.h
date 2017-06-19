@@ -150,6 +150,10 @@ public:
 				newParent->Right = forReplace;
 			}
 		}
+		/*if (node == m_root)
+		{
+			m_root = ;
+		}*/
 		delete node;
 	}
 };
